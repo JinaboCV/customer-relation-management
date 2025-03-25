@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .forms import CreateUserForm, LoginForm 
+from django.contrib.auth.models import auth
+from django.contrib.auth import authenticate
 
 # HomePage
 
@@ -14,8 +16,32 @@ def register(request):
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            form.save()
-            # return redirect()
+            form.save('login')
+            return redirect('')
 
     context = {'form': form}    
     return render(request, 'webapp/register.html' , context=context)        
+
+# Login a user 
+
+def my_login(request):
+    form  = LoginForm()
+    if request.method == 'POST':
+        form = LoginForm(request, data = request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(request, username=username, password=password)
+
+            # checking if the user exists
+            if user is not None:
+                auth.login(request, user)
+                # return redirect('')
+    context = {'form': form}
+    return render(request, 'webapp/login.html', context=context)
+
+# Logout
+ 
+def user_logout(request):
+    auth.logout(request)
+    return redirect('login')
