@@ -7,7 +7,8 @@
     <body>
         
         <div class="container bg-light shadow-mmd p-5 form-layout">
-            <h3>Loging to your account</h3>
+            <h3>Create record </h3>
+            <h3>Add the required details for your record </h3>
             <hr>
             <br>
 
@@ -16,12 +17,9 @@
                 <!-- {{form.as_p}} -->
                 {{form|crispy}}
                 <br>
-                <button type="submit" class="btn btn-primary w-100 btn-block p-2">Login</button>
+                <button type="submit" class="btn btn-primary w-100 btn-block p-2">Create record</button>
             </form>
-            <br> 
-            <div class="text-center">
-                <p>Don't have an account?</p> <a href="{% url 'register' %}">Register</a>
-            </div>
+        
         </div>
         <br>
     </body>
