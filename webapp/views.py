@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .forms import CreateUserForm, LoginForm 
 from django.contrib.auth.models import auth
 from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import login_required
 
 # HomePage
 
@@ -16,8 +17,8 @@ def register(request):
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            form.save('login')
-            return redirect('')
+            form.save()
+            return redirect('login')
 
     context = {'form': form}    
     return render(request, 'webapp/register.html' , context=context)        
@@ -36,7 +37,7 @@ def my_login(request):
             # checking if the user exists
             if user is not None:
                 auth.login(request, user)
-                # return redirect('')
+                return redirect('dashboard')
     context = {'form': form}
     return render(request, 'webapp/login.html', context=context)
 
@@ -45,3 +46,8 @@ def my_login(request):
 def user_logout(request):
     auth.logout(request)
     return redirect('login')
+
+# Dashboard
+@login_required(login_url='login')
+def dashboard(request):
+    return render(request, 'webapp/dashboard.html')
