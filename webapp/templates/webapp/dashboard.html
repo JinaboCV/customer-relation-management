@@ -34,7 +34,7 @@
                         <td>{{record.city}}</td>
                         <td>{{record.country}}</td>
                         <td>{{record.creation_date}}</td>
-                        <td></td>
+                        <td><a href="{% url 'record' record.id %}"> View record</a></td>
                     </tr>
                 {% endfor %}
             {% else %}
