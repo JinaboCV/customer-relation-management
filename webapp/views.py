@@ -66,3 +66,30 @@ def dashboard(request):
     records = Record.objects.all()
     context = {"records": records}
     return render(request, 'webapp/dashboard.html', context=context)
+
+# Update 
+@login_required(login_url='login')
+def update_record(request, pk):
+    record = Record.objects.get(id=pk)
+    form = UpdateRecordForm(instance=record)
+    if request.method == 'POST':
+        form = UpdateRecordForm(request.POST, instance=record)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+    context = {'form': form}
+    return render(request, 'webapp/update-record.html', context=context)
+
+# Read / view a singlur record
+@login_required(login_url='login')
+def view_record(request, pk):
+    record = Record.objects.get(id=pk)
+    context = {'record': record}
+    return render(request, 'webapp/view-record.html', context=context)
+
+# Delete record
+@login_required(login_url='login')
+def delete_record(request, pk):
+    record = Record.objects.get(id=pk)
+    record.delete()
+    return redirect('dashboard')
